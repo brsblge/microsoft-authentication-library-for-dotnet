@@ -29,6 +29,10 @@ namespace Microsoft.Identity.Client
         internal Func<TokenCacheNotificationArgs, Task> AsyncAfterAccess { get; set; }
         internal Func<TokenCacheNotificationArgs, Task> AsyncBeforeWrite { get; set; }
 
+        bool ITokenCacheInternal.HasBeforeAccessDelegates() => AsyncBeforeAccess != null || BeforeAccess != null;
+        bool ITokenCacheInternal.HasAfterAccessDelegates() => AsyncAfterAccess != null || AfterAccess != null;
+        bool ITokenCacheInternal.HasBeforeWriteDelegates() => AsyncBeforeWrite != null || BeforeWrite != null;
+
         async Task ITokenCacheInternal.OnAfterAccessAsync(TokenCacheNotificationArgs args)
         {
             AfterAccess?.Invoke(args);
